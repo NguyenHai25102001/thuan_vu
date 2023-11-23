@@ -14,6 +14,7 @@ class Http {
   private accessToken: string;
   constructor() {
     this.accessToken = getAccessTokenFromLS();
+    console.log("this.accessToken", this.accessToken);
     this.instance = axios.create({
       baseURL: API_URL,
       timeout: 10000,
@@ -37,6 +38,8 @@ class Http {
     this.instance.interceptors.response.use(
       (response) => {
         const { url } = response.config;
+        console.log(url);
+
         if (url === path.login) {
           const data = response.data as AuthResponse;
           this.accessToken = (response.data as AuthResponse).data?.token;

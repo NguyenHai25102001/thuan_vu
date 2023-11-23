@@ -66,14 +66,7 @@ const AppNavigation = () => {
     <div className="h-screen relative flex flex-col">
       <div className="flex-1 flex flex-col overflow-hidden">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Suspense>
-                <Home />
-              </Suspense>
-            }
-          ></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path={path.shop} element={<Shop />}></Route>
           <Route path={path.milestone} element={<Milestone />}></Route>
           <Route path={path.profile} element={<Profile />}></Route>

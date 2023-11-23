@@ -1,4 +1,4 @@
-export const baseUrl = "https://linokids.net/";
+export const baseUrl = "https://thuanvu.appdrbaby.com";
 const revo = "https://cms.temchonggia.com/backend/";
 const API = {
   loginZalo: () => baseUrl + "api/login-zalo-miniapp",
