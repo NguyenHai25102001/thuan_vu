@@ -1,0 +1,23 @@
+.zaui-swiper-dots-item {
+  background-color: #ffffff !important;
+  width: 6px !important;
+  height: 6px !important;
+}
+.zaui-swiper-dots-item-active {
+  background-color: #f5cf40 !important;
+  width: 18px !important;
+  height: 6px !important;
+  border-radius: 100px;
+}
+.title-home {
+  background: linear-gradient(179deg, #e9636e 0%, rgba(63, 196, 254, 0) 100%);
+}
+.zaui-modal-wrapper .modal-parameters {
+  width: 319px !important;
+}
+.zaui-modal-content-main {
+  padding: 10px 15px !important;
+}
+.zaui-swiper-item {
+  opacity: 1 !important;
+}

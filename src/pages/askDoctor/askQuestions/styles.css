@@ -1,0 +1,11 @@
+.modal-cus2 {
+  width: 250px !important;
+  max-width: calc(100vw - 64px);
+}
+.zaui-modal-content-main {
+  padding: 10px;
+}
+/* .modal-cus{
+    width: 350px !important;
+    max-width: calc(100vw - 20px);
+} */

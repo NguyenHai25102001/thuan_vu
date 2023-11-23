@@ -1,0 +1,53 @@
+export type CategoryHandbook = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  banner: string;
+  created_at: string;
+  updated_at: string;
+};
+export type CategoryHandbookDetail = {
+  id: number;
+  title: string;
+  content: string;
+  image: string;
+  src: string;
+  type: number;
+  created_at: string;
+  updated_at: string;
+  category_id: number;
+};
+export type ArticleHandbook = {
+  id: number;
+  title: string;
+  content: string;
+  image: string;
+  src: string;
+  type: number;
+  created_at: string;
+  updated_at: string;
+  category_id: number;
+};
+export type ProductHandbook = {
+  id: number;
+  name: string;
+  id_sectors: number;
+  name_sectors: string;
+  id_group_goods: 2;
+  name_group_goods: string;
+  id_category_kiotviet: number;
+  id_product_kiotviet: number;
+  id_shop_kiotviet: number;
+  describe: string;
+  image: string;
+  money_base: number;
+  money: number;
+  inventory_number: number;
+  quantity_sold: number;
+  date_end: string;
+  unit: string;
+  type: number;
+  created_at: string;
+  updated_at: string;
+};

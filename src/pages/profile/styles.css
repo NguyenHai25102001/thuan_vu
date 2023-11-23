@@ -1,0 +1,9 @@
+.info-bae {
+  background-image: url(../../static/icon/boxShapeBlueToTran.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  width: 89px;
+  height: 68px;
+  border-radius: 20px;
+}

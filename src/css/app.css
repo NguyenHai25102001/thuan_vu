@@ -1,0 +1,26 @@
+.page {
+  padding: 0;
+}
+.spin-loading {
+  margin: 15px auto 0;
+  width: 40px;
+  height: 40px;
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid #3a11b5; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.zaui-page-hide-scrollbar .zaui-input-affix-wrapper {
+  border: 1px solid #e9636e !important;
+}
+.zaui-page.disable-scrolling {
+  overflow: auto !important;
+}

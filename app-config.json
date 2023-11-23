@@ -1,0 +1,19 @@
+{
+  "app": {
+    "title": "ShopThuanVu",
+    "headerColor": "",
+    "textColor": "black",
+    "statusBarColor": "transparent",
+    "leftButton": "none",
+    "statusBar": "transparent",
+    "selfControlLoading": false,
+    "hideAndroidBottomNavigationBar": false,
+    "hideIOSSafeAreaBottom": false,
+    "actionBarHidden": true
+  },
+  "debug": false,
+  "pages": [],
+  "listCSS": [],
+  "listSyncJS": [],
+  "listAsyncJS": []
+}
