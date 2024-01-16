@@ -8,6 +8,7 @@ import "./css/tailwind.css";
 import "zmp-ui/zaui.css";
 
 import "./css/app.css";
+// import  "./css/bootstrap.min.css"
 
 // Import App Component
 import Layout from "./layout";

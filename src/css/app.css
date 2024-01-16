@@ -24,3 +24,16 @@
 .zaui-page.disable-scrolling {
   overflow: auto !important;
 }
+.w-90{
+  width: 90%;
+}
+.btn-click{
+  display: flex;
+  justify-content: center;
+}
+.btn-login{
+
+}
+.form-login{
+  transform: translateY(50%);
+}

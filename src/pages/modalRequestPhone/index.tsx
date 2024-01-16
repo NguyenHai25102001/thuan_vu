@@ -1,4 +1,4 @@
-import React, { useContext, lazy, Suspense } from "react";
+import React, {useContext, lazy, Suspense, useState, useEffect} from "react";
 import Images from "../../static";
 import { AppContext } from "../../contexts/app.context";
 import authApi from "../../apis/auth.apis";
@@ -8,7 +8,10 @@ import { saveListBabyToLS } from "../../utils/auth";
 import profileApi from "../../apis/profileC.apis";
 import axios from "axios";
 import LoadingPage from "../loadingScreen";
+import Swal from 'sweetalert2'
 const AddBaby = lazy(() => import("../addBaby"));
+
+
 const ModalRequestPhone = () => {
   const {
     isAuthenticated,
@@ -23,6 +26,7 @@ const ModalRequestPhone = () => {
   //
   const [loading, setLoading] = React.useState(false);
   const [phoneTemp, setPhoneTemp] = React.useState("");
+  const [isOpen, setIsOpen] = React.useState(false );
 
   const getProfile = async () => {
     try {
@@ -35,17 +39,16 @@ const ModalRequestPhone = () => {
       console.log(error);
     }
   };
+  useEffect(() => {
+   if(phoneUser){
+     setPhoneUser(localStorage.getItem('phoneUser'))
+   }
 
-  //
-  const closeMiniApp = async () => {
-    try {
-      setProfile(null);
-      setIsAuthenticated(false);
-      await closeApp({});
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  }, []);
+
+
+
+
   const logintMutation = useMutation({
     mutationFn: (body: { phone: string }) => authApi.login(body),
   });
@@ -63,27 +66,21 @@ const ModalRequestPhone = () => {
       console.log(error);
     }
   };
+
+
   const handleLogin = async () => {
+    if (!phoneUser){
+
+
+      return;
+
+    }
+
+
     try {
       setLoading(true);
-      const accessToken = await getAccessToken({});
-      if (accessToken?.code === -1401) {
-        closeMiniApp();
-      } else {
-        console.log("accessToken", accessToken);
-        const resToken = await getPhoneNumber();
 
-        const response = await axios({
-          url: "https://graph.zalo.me/v2.0/me/info",
-          headers: {
-            access_token: accessToken,
-            code: resToken.token,
-            secret_key: "E59b4czjTnbUN49vG48c",
-          },
-        });
-        const numberReturn = response.data?.data?.number;
-        const phoneNumber = String(numberReturn);
-        const phone = phoneNumber.replace("84", "0");
+        const phone =phoneUser;
         const body = { phone: phone };
         const res = await authApi.login(body);
         if (res.data.code === 200) {
@@ -91,16 +88,23 @@ const ModalRequestPhone = () => {
           setPhoneTemp(phone);
           setPhoneUser(phone);
           setIsAuthenticated(true);
+          localStorage.setItem('phoneUser',phoneUser);
         } else {
           alert("Thử lại sau");
         }
-      }
+
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if(phoneUser){
+      handleLogin();
+    }
+  }, [phoneUser]);
 
   if (isAuthenticated && !!phoneTemp && !!listBaby && !!listBaby.length) {
     return <></>;
@@ -116,78 +120,95 @@ const ModalRequestPhone = () => {
 
   return (
     <div className="absolute z-[9999] p-0 m-0 w-full h-full flex flex-cols items-center justify-center bg-[#222222]">
-      <div className="w-[90%] rounded-xl bg-white px-4">
-        <img
-          src={Images.babey}
-          className=" w-32 h-32 object-contain mx-auto mt-3"
-        />
-        <p className=" font-bold uppercase text-center text-lg leading-6 my-2">
-          CHÀO MỪNG ĐẾN VỚI <br />
-          SHOP THUẬN VŨ
-        </p>
-        <p className=" font-semibold text-base leading-6 mt-2">
-          Chúng tôi cần số điện thoại của bạn để:
-        </p>
-        <div className="flex items-center mt-1">
-          <svg width="21" height="20" viewBox="0 0 21 20" fill="none">
-            <path
-              d="M7.01855 4L13.0186 10L7.01855 16"
-              stroke="#e9636e"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <p className=" font-medium text-base leading-6 ">
-            Định danh tài khoản
-          </p>
-        </div>
-        <div className="flex items-center mt-1">
-          <svg width="21" height="20" viewBox="0 0 21 20" fill="none">
-            <path
-              d="M7.01855 4L13.0186 10L7.01855 16"
-              stroke="#e9636e"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <p className=" font-medium text-base leading-6 ">Mua bán sản phẩm</p>
-        </div>
-        <div className="flex items-center mt-1">
-          <svg width="21" height="20" viewBox="0 0 21 20" fill="none">
-            <path
-              d="M7.01855 4L13.0186 10L7.01855 16"
-              stroke="#e9636e"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <p className=" font-medium text-base leading-6 ">Tra cứu đơn hàng</p>
-        </div>
 
-        <p className=" font-medium text-base  leading-6 mt-2">
-          Vui lòng đồng ý chia sẻ số điện thoại với Shop Thuận Vũ để liên kết
-          tài khoản.
-        </p>
-        <p className="font-medium text-base text-center leading-6 mt-2"></p>
-        <div
-          className="w-[100%] py-2 flex items-center justify-center border-2 bg-main bg-blue mt-4 mb-3 rounded-md"
-          onClick={handleLogin}
-        >
-          <p className="text-base text-[#fff] font-light">
-            Liên kết số điện thoại
+      {
+        isOpen?(
+            <div className='h-full w-full bg-cyan-400 '>
+              <div className="form-login w-[90%] rounded-xl bg-white  m-auto mt-[50%]">
+                <div className='py-4 px-3 '>
+                  <input type='text' className='block w-full rounded-md border-0 py-1.5 pl-2 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                         placeholder={'Vui lòng nhập số điện thoại...'}
+                         onChange={(e)=>setPhoneUser(e.target.value)}/>
+                  <div className="flex justify-content-center btn-click">
+                    <button type={'button'} className='p-2 bg-emerald-600 rounded-md text-white mt-3' onClick={handleLogin}>Đăng nhập</button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+        ):(<div className="w-[90%] rounded-xl bg-white px-4">
+          <img
+              src={Images.babey}
+              className=" w-32 h-32 object-contain mx-auto mt-3"
+          />
+          <p className=" font-bold uppercase text-center text-lg leading-6 my-2">
+            CHÀO MỪNG ĐẾN VỚI <br />
+            SHOP THUẬN VŨ
           </p>
-        </div>
-        <div
-          className="w-full box-content py-2 flex items-center justify-center border-2 border-main mb-6 rounded-md"
-          onClick={closeMiniApp}
-        >
-          <p className="text-base text-black font-light">Từ chối và thoát</p>
-        </div>
-      </div>
+          <p className=" font-semibold text-base leading-6 mt-2">
+            Chúng tôi cần số điện thoại của bạn để:
+          </p>
+          <div className="flex items-center mt-1">
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path
+                  d="M7.01855 4L13.0186 10L7.01855 16"
+                  stroke="#e9636e"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+              />
+            </svg>
+            <p className=" font-medium text-base leading-6 ">
+              Định danh tài khoản
+            </p>
+          </div>
+          <div className="flex items-center mt-1">
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path
+                  d="M7.01855 4L13.0186 10L7.01855 16"
+                  stroke="#e9636e"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+              />
+            </svg>
+            <p className=" font-medium text-base leading-6 ">Mua bán sản phẩm</p>
+          </div>
+          <div className="flex items-center mt-1">
+            <svg width="21" height="20" viewBox="0 0 21 20" fill="none">
+              <path
+                  d="M7.01855 4L13.0186 10L7.01855 16"
+                  stroke="#e9636e"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+              />
+            </svg>
+            <p className=" font-medium text-base leading-6 ">Tra cứu đơn hàng</p>
+          </div>
+
+          <p className=" font-medium text-base  leading-6 mt-2">
+            Vui lòng đồng ý chia sẻ số điện thoại với Shop Thuận Vũ để liên kết
+            tài khoản.
+          </p>
+          <p className="font-medium text-base text-center leading-6 mt-2"></p>
+          <div
+              className="w-[100%] py-2 flex items-center justify-center border-2 bg-main bg-blue mt-4 mb-3 rounded-md"
+              onClick={()=>setIsOpen(true)}
+
+          >
+            <p className="text-base text-[#fff] font-light">
+              Liên kết số điện thoại
+            </p>
+          </div>
+
+        </div>)
+      }
+
       {(loading || logintMutation.isLoading) && <LoadingPage />}
+
+
+
     </div>
   );
 };

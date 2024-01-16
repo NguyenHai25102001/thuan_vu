@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, {Suspense, lazy, useContext} from "react";
 import { Route, Routes } from "react-router-dom";
 import Shop from "../pages/shop";
 import Milestone from "../pages/milestone";
@@ -13,7 +13,7 @@ import SearchAsk from "../pages/askDoctor/searchAsk";
 import DetailAsk from "../pages/askDoctor/detailAsk";
 import HistoryAsk from "../pages/askDoctor/historyAsk";
 import AskQuestions from "../pages/askDoctor/askQuestions";
-import Voucher from "../pages/voucher";
+import VoucherComponent from "../pages/voucher";
 import BabyHealth from "../pages/babyHealth";
 import BrandPoin from "../pages/brandPoin";
 import BrandGift from "../pages/brandGift";
@@ -48,6 +48,7 @@ import ListBlog from "../pages/profile/listBlog";
 import DetailBlog from "../pages/profile/detailBlog";
 import LisPostWithProblem from "../pages/listPostWithProblem";
 import DetailPostProblem from "../pages/listPostWithProblem/detailPostProblem";
+import {AppContext} from "../contexts/app.context";
 const CustomNavigationBotom = lazy(() => import("./bottomTab"));
 const Home = lazy(() => import("../pages/home"));
 const AppNavigation = () => {
@@ -61,6 +62,11 @@ const AppNavigation = () => {
   //     `${androidSafeTop}px`
   //   );
   // }
+
+  const {
+    phoneUser,
+    setPhoneUser,
+  } = useContext(AppContext);
 
   return (
     <div className="h-screen relative flex flex-col">
@@ -79,7 +85,7 @@ const AppNavigation = () => {
           <Route path={path.detailQuestion} element={<DetailAsk />}></Route>
           <Route path={path.historyAsk} element={<HistoryAsk />}></Route>
           <Route path={path.askQuestions} element={<AskQuestions />}></Route>
-          <Route path={path.voucher} element={<Voucher />}></Route>
+          <Route path={path.voucher} element={<VoucherComponent />}></Route>
           <Route path={path.babyHealth} element={<BabyHealth />}></Route>
           <Route path={path.brandPoin} element={<BrandPoin />}></Route>
           <Route path={path.brandGift} element={<BrandGift />}></Route>
@@ -150,7 +156,10 @@ const AppNavigation = () => {
       <Suspense>
         <CustomNavigationBotom />
       </Suspense>
-      <ModalRequestPhone />
+      {
+        !phoneUser&&(<ModalRequestPhone />)
+      }
+
     </div>
   );
 };

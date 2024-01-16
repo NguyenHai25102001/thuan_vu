@@ -77,7 +77,7 @@ export const BtnAccessHome = ({ onClick }) => {
 };
 const Home = () => {
   const navigate = useNavigate();
-  const { selectedBaby, phoneUser } = useContext(AppContext);
+  const { selectedBaby, phoneUser,setPhoneUser } = useContext(AppContext);
   const [itemProductChoose, setItemProductChoose] =
     React.useState<IProductShop>();
   const [showFollow, setShowFollow] = React.useState<boolean>(false);
@@ -106,6 +106,13 @@ const Home = () => {
     React.useState<DetailProblem[]>([]);
   const refListBaby = React.useRef(null);
   const refModalAddProduct = React.useRef(null);
+
+  // useEffect(() => {
+  //   setPhoneUser("84354583367")
+  // }, []);
+
+  console.log(phoneUser)
+
   const { data: dataBannerHome } = useQuery({
     queryKey: ["dataBannerHome"],
     queryFn: () => {

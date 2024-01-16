@@ -11,7 +11,7 @@ import { API_URL_IMAGE } from "../../constants/utils";
 import SpinLoad from "../../components/spinLoad";
 import ModaNotify from "../../components/modaNotify";
 
-const Voucher = () => {
+const VoucherComponent = () => {
   const navigate = useNavigate();
 
   const [point, setPoint] = React.useState<Point>();
@@ -145,7 +145,7 @@ const Voucher = () => {
           </div>
           <div className="rounded-b-lg h-32 w-full border border-[#e4e4eb] border-t-0 flex flex-col justify-center items-center">
             <p className="text-4xl font-['Montserrat'] font-semibold text-[#d54f44] bg-gradient-to-r from-pink-600 via-red-600 to-orange-500 text-transparent bg-clip-text">
-              {point} Đ
+                {/*{point} Đ*/}
             </p>
             <p className="text-sm font-['Montserrat']text-[#8f90a6] pt-2">
               Tổng điểm đã tích
@@ -225,4 +225,4 @@ const Voucher = () => {
   );
 };
 
-export default Voucher;
+export default VoucherComponent;
